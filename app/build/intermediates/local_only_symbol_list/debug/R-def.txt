@@ -9,11 +9,17 @@ color teal_700
 color white
 drawable ic_launcher_background
 drawable ic_launcher_foreground
+id ButtonCommunity
+id ButtonHome
+id backButton
 id guideline
+id listView
 id mapView
 id searchView
+id textView
 layout activity_main
 layout community
+layout simple_list_item_1
 mipmap ic_launcher
 mipmap ic_launcher_round
 string app_name

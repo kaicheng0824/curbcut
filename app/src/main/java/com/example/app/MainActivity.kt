@@ -16,24 +16,32 @@
 
 package com.example.app
 
+import android.content.Intent
+import android.graphics.Point
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-
 import android.util.Log
+import android.widget.ArrayAdapter
+import android.widget.Button
+import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
-
 import com.arcgismaps.ApiKey
 import com.arcgismaps.ArcGISEnvironment
 import com.arcgismaps.Color
 import com.arcgismaps.data.ServiceFeatureTable
+import com.arcgismaps.geometry.GeometryEngine
 import com.arcgismaps.mapping.ArcGISMap
 import com.arcgismaps.mapping.BasemapStyle
 import com.arcgismaps.mapping.Viewpoint
 import com.arcgismaps.mapping.layers.FeatureLayer
 import com.arcgismaps.mapping.symbology.HorizontalAlignment
+import com.arcgismaps.mapping.symbology.SimpleFillSymbol
+import com.arcgismaps.mapping.symbology.SimpleFillSymbolStyle
+import com.arcgismaps.mapping.symbology.SimpleLineSymbol
+import com.arcgismaps.mapping.symbology.SimpleLineSymbolStyle
 import com.arcgismaps.mapping.symbology.SimpleMarkerSymbol
 import com.arcgismaps.mapping.symbology.SimpleMarkerSymbolStyle
 import com.arcgismaps.mapping.symbology.TextSymbol
@@ -41,12 +49,19 @@ import com.arcgismaps.mapping.symbology.VerticalAlignment
 import com.arcgismaps.mapping.view.Graphic
 import com.arcgismaps.mapping.view.GraphicsOverlay
 import com.arcgismaps.mapping.view.MapView
+import com.arcgismaps.mapping.view.SingleTapConfirmedEvent
 import com.arcgismaps.tasks.geocode.GeocodeParameters
 import com.arcgismaps.tasks.geocode.GeocodeResult
 import com.arcgismaps.tasks.geocode.LocatorTask
-
+import com.arcgismaps.tasks.networkanalysis.DirectionManeuver
+import com.arcgismaps.tasks.networkanalysis.PolygonBarrier
+import com.arcgismaps.tasks.networkanalysis.RouteParameters
+import com.arcgismaps.tasks.networkanalysis.RouteResult
+import com.arcgismaps.tasks.networkanalysis.RouteTask
+import com.arcgismaps.tasks.networkanalysis.Stop
 import com.example.app.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -58,9 +73,34 @@ class MainActivity : AppCompatActivity() {
         activityMainBinding.mapView
     }
 
+    private val barrierSymbol by lazy {
+        SimpleFillSymbol(SimpleFillSymbolStyle.DiagonalCross, Color.red, null)
+    }
+
+    private val listView: ListView by lazy {
+        activityMainBinding.listView
+    }
+
+    private val barriersList by lazy { mutableListOf<PolygonBarrier>() }
+
+    private val directionsList: MutableList<String> by lazy {
+        mutableListOf("Tap to add two points to the map to find a route between them.")
+    }
+
+    private val arrayAdapter by lazy {
+        ArrayAdapter(this, R.layout.simple_list_item_1, directionsList)
+
+    }
+
+    private val routeStops: MutableList<Stop> by lazy {
+        mutableListOf()
+    }
+
     private val graphicsOverlay: GraphicsOverlay by lazy {
         GraphicsOverlay()
     }
+
+    private val barriersOverlay by lazy { GraphicsOverlay() }
 
     private val geocodeServerUri = "https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer"
     private val locatorTask = LocatorTask(geocodeServerUri)
@@ -68,14 +108,106 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // some parts of the API require an Android Context to properly interact with Android system
+        // features, such as LocationProvider and application resources
+        ArcGISEnvironment.applicationContext = applicationContext
+
+//        listView.adapter = arrayAdapter
+
         setApiKeyForApp()
 
         setupMap()
 
         setupSearchViewListener()
+        setUpButtonListener()
+
+
 
         addGraphics()
 
+    }
+
+    private fun addStop(stop: Stop) {
+        routeStops.add(stop)
+
+        // create a green circle symbol for the stop
+        val stopMarker = SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Circle, Color.red, 20f)
+        // get the stop's geometry
+        val routeStopGeometry = stop.geometry
+        // add graphic to graphics overlay
+        graphicsOverlay.graphics.add(Graphic(routeStopGeometry, stopMarker))
+    }
+
+//    private fun addBarrier(stop: Stop) {
+//        // create a buffered polygon around the clicked point
+//        val barrierBufferPolygon = GeometryEngine.bufferOrNull(mapPoint, 200.0)
+//            ?: return showError("Error creating buffer polygon")
+//        // create a polygon barrier for the routing task, and add it to the list of barriers
+//        barriersList.add(PolygonBarrier(barrierBufferPolygon))
+//        barriersOverlay.graphics.add(Graphic(barrierBufferPolygon, barrierSymbol))
+//    }
+
+
+    private fun findRoute() {
+
+        val routeTask = RouteTask(
+            "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World"
+        )
+
+        lifecycleScope.launch {
+            val routeParameters: RouteParameters =
+                routeTask.createDefaultParameters().getOrElse { error ->
+                    return@launch showError("Error creating default route parameters: " + error.message)
+
+                }
+
+            routeParameters.apply {
+                // Add the stops to the route parameters
+                setStops(routeStops)
+                setPolygonBarriers(barriersList)
+
+                // Return driving directions in Spanish
+                routeParameters.returnDirections = true
+            }
+
+//            routeParameters.travelMode =
+
+
+            // get the route and display it
+            val routeResult: RouteResult =
+                routeTask.solveRoute(routeParameters).getOrElse { error ->
+                    return@launch showError("Error solving route: " + error.message)
+                }
+
+            val routes = routeResult.routes
+            if (routes.isNotEmpty()) {
+                val route = routes[0]
+
+                val shape = route.routeGeometry
+                val routeGraphic = Graphic(
+                    shape,
+                    SimpleLineSymbol(SimpleLineSymbolStyle.Solid, Color.green, 10f)
+                )
+                graphicsOverlay.graphics.add(routeGraphic)
+
+                // get the direction text for each maneuver and display it as a list in the UI
+                directionsList.clear()
+                route.directionManeuvers.forEach { directionManeuver: DirectionManeuver ->
+                    directionsList.add(directionManeuver.directionText)
+                }
+                arrayAdapter.notifyDataSetChanged()
+
+            }
+
+        }
+    }
+
+    private fun clear() {
+        routeStops.clear()
+        graphicsOverlay.graphics.clear()
+        directionsList.clear()
+        directionsList.add("Tap to add two points to the map to find a route between them.")
+        arrayAdapter.notifyDataSetChanged()
     }
 
     private fun setApiKeyForApp(){
@@ -107,10 +239,47 @@ class MainActivity : AppCompatActivity() {
             setViewpoint(Viewpoint(45.51, -122.667, 72000.0))
 
             graphicsOverlays.add(graphicsOverlay)
+            lifecycleScope.launch {
+                onSingleTapConfirmed.collect { event: SingleTapConfirmedEvent ->
+                    val point: com.arcgismaps.geometry.Point = event.mapPoint ?: return@collect showError("No map point retrieved from tap.")
+                    when (routeStops.size) {
+                        // on first tap, add a stop
+                        0 -> {
+                            addStop(Stop(point))
+                        }
+                        // on second tap, add a stop and find route between them
+                        1 -> {
+                            addStop(Stop(point))
+//                            findRoute()
+//                            Toast.makeText(
+//                                applicationContext,
+//                                "Calculating route.",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+                        }
+//                        2 -> {
+//                            addBarrier(Stop(point))
+//                            findRoute()
+//                            Toast.makeText(
+//                                applicationContext,
+//                                "Calculating route.",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
+//                        }
+                        // on a further tap, clear and add a new first stop
+                        else -> {
+                            clear()
+                            addStop(Stop(point))
+                        }
+                    }
+                }
+            }
+
         }
         topographicMap.operationalLayers.add(FeatureLayer.createWithFeatureTable(portlandBikeRackFeatureTable))
         topographicMap.operationalLayers.add(FeatureLayer.createWithFeatureTable(portlandBikeRouteFeatureTable))
     }
+
 
     private fun setupSearchViewListener() {
         activityMainBinding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -122,10 +291,23 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    // Switch to Community View Page
-    private fun setupCommunityViewListener() {
-
+    private fun setUpButtonListener() {
+//        activityMainBinding.ButtonCommunity.setOnClickListener(View.OnClickListener {
+//            val menuIntent = Intent(this, Community::class.java)
+//            startActivity(menuIntent)
+//        })
+        val button: Button = findViewById(R.id.ButtonCommunity)
+        // Register the onClick listener with the implementation above
+        button.setOnClickListener { view ->
+            val menuIntent = Intent(this, Community::class.java)
+            startActivity(menuIntent)
+        }
     }
+
+
+
+
+
 
     private fun performGeocode(query: String) {
 

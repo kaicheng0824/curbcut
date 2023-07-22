@@ -4,6 +4,8 @@ package com.example.app.databinding;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +19,16 @@ import java.lang.Object;
 
 public abstract class ActivityMainBinding extends ViewDataBinding {
   @NonNull
+  public final Button ButtonCommunity;
+
+  @NonNull
+  public final Button ButtonHome;
+
+  @NonNull
   public final Guideline guideline;
+
+  @NonNull
+  public final ListView listView;
 
   @NonNull
   public final MapView mapView;
@@ -26,9 +37,13 @@ public abstract class ActivityMainBinding extends ViewDataBinding {
   public final SearchView searchView;
 
   protected ActivityMainBinding(Object _bindingComponent, View _root, int _localFieldCount,
-      Guideline guideline, MapView mapView, SearchView searchView) {
+      Button ButtonCommunity, Button ButtonHome, Guideline guideline, ListView listView,
+      MapView mapView, SearchView searchView) {
     super(_bindingComponent, _root, _localFieldCount);
+    this.ButtonCommunity = ButtonCommunity;
+    this.ButtonHome = ButtonHome;
     this.guideline = guideline;
+    this.listView = listView;
     this.mapView = mapView;
     this.searchView = searchView;
   }

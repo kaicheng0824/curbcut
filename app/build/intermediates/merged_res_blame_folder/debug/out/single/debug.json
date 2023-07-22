@@ -1,5 +1,9 @@
 [
     {
+        "merged": "com.example.app-merged_res-35:/layout_simple_list_item_1.xml.flat",
+        "source": "com.example.app-main-37:/layout/simple_list_item_1.xml"
+    },
+    {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-anydpi-v26/ic_launcher.xml"
     },
@@ -20,6 +24,10 @@
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/drawable/ic_launcher_background.xml"
     },
     {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_simple_list_item_1.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/simple_list_item_1.xml"
+    },
+    {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/xml_data_extraction_rules.xml.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/xml/data_extraction_rules.xml"
     },
@@ -30,10 +38,6 @@
     {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/drawable-v24_ic_launcher_foreground.xml.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/drawable-v24/ic_launcher_foreground.xml"
-    },
-    {
-        "merged": "com.example.app-merged_res-35:/layout_activity_main.xml.flat",
-        "source": "com.example.app-main-37:/layout/activity_main.xml"
     },
     {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-hdpi_ic_launcher_round.webp.flat",

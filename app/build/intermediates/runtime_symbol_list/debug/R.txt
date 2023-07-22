@@ -2646,6 +2646,8 @@ int drawable tooltip_frame_light 0x7f0700d7
 int id ALT 0x7f080000
 int id BOTTOM_END 0x7f080001
 int id BOTTOM_START 0x7f080002
+int id ButtonCommunity 0x7f0801e9
+int id ButtonHome 0x7f0801ea
 int id CTRL 0x7f080003
 int id FUNCTION 0x7f080004
 int id META 0x7f080005
@@ -2730,6 +2732,7 @@ int id auto 0x7f080053
 int id autoComplete 0x7f080054
 int id autoCompleteToEnd 0x7f080055
 int id autoCompleteToStart 0x7f080056
+int id backButton 0x7f0801eb
 int id barrier 0x7f080057
 int id baseline 0x7f080058
 int id beginOnFirstDraw 0x7f080059
@@ -2885,6 +2888,7 @@ int id line1 0x7f0800ee
 int id line3 0x7f0800ef
 int id linear 0x7f0800f0
 int id listMode 0x7f0800f1
+int id listView 0x7f0801ed
 int id list_item 0x7f0800f2
 int id mapView 0x7f0800f3
 int id marquee 0x7f0800f4
@@ -3080,6 +3084,7 @@ int id textSpacerNoButtons 0x7f0801b1
 int id textSpacerNoTitle 0x7f0801b2
 int id textStart 0x7f0801b3
 int id textTop 0x7f0801b4
+int id textView 0x7f0801ec
 int id textWatcher 0x7f0801b5
 int id text_input_end_icon 0x7f0801b6
 int id text_input_error_icon 0x7f0801b7
@@ -3327,6 +3332,7 @@ int layout notification_template_part_time 0x7f0b0063
 int layout select_dialog_item_material 0x7f0b0064
 int layout select_dialog_multichoice_material 0x7f0b0065
 int layout select_dialog_singlechoice_material 0x7f0b0066
+int layout simple_list_item_1 0x7f0b0069
 int layout support_simple_spinner_dropdown_item 0x7f0b0067
 int mipmap ic_launcher 0x7f0d0000
 int mipmap ic_launcher_round 0x7f0d0001
