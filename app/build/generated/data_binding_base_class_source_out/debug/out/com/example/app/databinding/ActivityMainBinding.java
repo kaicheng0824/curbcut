@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.SearchView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,22 +27,18 @@ public abstract class ActivityMainBinding extends ViewDataBinding {
   public final Guideline guideline;
 
   @NonNull
-  public final ListView listView;
-
-  @NonNull
   public final MapView mapView;
 
   @NonNull
   public final SearchView searchView;
 
   protected ActivityMainBinding(Object _bindingComponent, View _root, int _localFieldCount,
-      Button ButtonCommunity, Button ButtonHome, Guideline guideline, ListView listView,
-      MapView mapView, SearchView searchView) {
+      Button ButtonCommunity, Button ButtonHome, Guideline guideline, MapView mapView,
+      SearchView searchView) {
     super(_bindingComponent, _root, _localFieldCount);
     this.ButtonCommunity = ButtonCommunity;
     this.ButtonHome = ButtonHome;
     this.guideline = guideline;
-    this.listView = listView;
     this.mapView = mapView;
     this.searchView = searchView;
   }

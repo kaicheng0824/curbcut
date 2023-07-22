@@ -13,7 +13,6 @@ id ButtonCommunity
 id ButtonHome
 id backButton
 id guideline
-id listView
 id mapView
 id searchView
 id textView

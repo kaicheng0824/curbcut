@@ -17,12 +17,9 @@
 package com.example.app
 
 import android.content.Intent
-import android.graphics.Point
 import android.os.Bundle
 import android.util.Log
-import android.widget.ArrayAdapter
 import android.widget.Button
-import android.widget.ListView
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +30,7 @@ import com.arcgismaps.ArcGISEnvironment
 import com.arcgismaps.Color
 import com.arcgismaps.data.ServiceFeatureTable
 import com.arcgismaps.geometry.GeometryEngine
+import com.arcgismaps.geometry.Point
 import com.arcgismaps.mapping.ArcGISMap
 import com.arcgismaps.mapping.BasemapStyle
 import com.arcgismaps.mapping.Viewpoint
@@ -61,45 +59,36 @@ import com.arcgismaps.tasks.networkanalysis.RouteTask
 import com.arcgismaps.tasks.networkanalysis.Stop
 import com.example.app.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
+import org.json.JSONObject
+
 
 
 class MainActivity : AppCompatActivity() {
 
-    private val activityMainBinding: ActivityMainBinding by lazy {
-        DataBindingUtil.setContentView(this, R.layout.activity_main)
-    }
+    private val activityMainBinding: ActivityMainBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_main) }
+    private val mapView: MapView by lazy { activityMainBinding.mapView }
+//    private val barrierList: MutableList<> by lazy { mutableListOf() }
 
-    private val mapView: MapView by lazy {
-        activityMainBinding.mapView
-    }
+//    private val listView: ListView by lazy {
+//        activityMainBinding.listView
+//    }
 
-    private val barrierSymbol by lazy {
-        SimpleFillSymbol(SimpleFillSymbolStyle.DiagonalCross, Color.red, null)
-    }
+//    private val barriersList by lazy { mutableListOf<PolygonBarrier>() }
 
-    private val listView: ListView by lazy {
-        activityMainBinding.listView
-    }
+    private val directionsList: MutableList<String> by lazy { mutableListOf("Tap to add two points to the map to find a route between them.") }
+
+//    private val arrayAdapter by lazy {
+//        ArrayAdapter(this, R.layout.simple_list_item_1, directionsList)
+//
+//    }
 
     private val barriersList by lazy { mutableListOf<PolygonBarrier>() }
+//    private val barrierSymbol by lazy {
+//        SimpleFillSymbol(SimpleFillSymbolStyle.DiagonalCross, Color.red, null)
+//    }
 
-    private val directionsList: MutableList<String> by lazy {
-        mutableListOf("Tap to add two points to the map to find a route between them.")
-    }
-
-    private val arrayAdapter by lazy {
-        ArrayAdapter(this, R.layout.simple_list_item_1, directionsList)
-
-    }
-
-    private val routeStops: MutableList<Stop> by lazy {
-        mutableListOf()
-    }
-
-    private val graphicsOverlay: GraphicsOverlay by lazy {
-        GraphicsOverlay()
-    }
-
+    private val routeStops: MutableList<Stop> by lazy { mutableListOf() }
+    private val graphicsOverlay: GraphicsOverlay by lazy { GraphicsOverlay() }
     private val barriersOverlay by lazy { GraphicsOverlay() }
 
     private val geocodeServerUri = "https://geocode-api.arcgis.com/arcgis/rest/services/World/GeocodeServer"
@@ -115,15 +104,11 @@ class MainActivity : AppCompatActivity() {
 //        listView.adapter = arrayAdapter
 
         setApiKeyForApp()
-
         setupMap()
-
         setupSearchViewListener()
         setUpButtonListener()
-
-
-
         addGraphics()
+
 
     }
 
@@ -138,21 +123,57 @@ class MainActivity : AppCompatActivity() {
         graphicsOverlay.graphics.add(Graphic(routeStopGeometry, stopMarker))
     }
 
-//    private fun addBarrier(stop: Stop) {
-//        // create a buffered polygon around the clicked point
+//    private fun addBarrier(mapPoint: com.arcgismaps.geometry.Point) {
+//         // create a buffered polygon around the clicked point
+//        val barrierSymbol = SimpleMarkerSymbol(SimpleMarkerSymbolStyle.Circle, Color.black, 20f)
 //        val barrierBufferPolygon = GeometryEngine.bufferOrNull(mapPoint, 200.0)
-//            ?: return showError("Error creating buffer polygon")
-//        // create a polygon barrier for the routing task, and add it to the list of barriers
-//        barriersList.add(PolygonBarrier(barrierBufferPolygon))
-//        barriersOverlay.graphics.add(Graphic(barrierBufferPolygon, barrierSymbol))
+//                ?: return showError("Error creating buffer polygon")
+//            // create a polygon barrier for the routing task, and add it to the list of barriers
+//            barriersList.add(PolygonBarrier(barrierBufferPolygon))
+//            barriersOverlay.graphics.add(Graphic(barrierBufferPolygon, barrierSymbol))
 //    }
+
+    private fun addStopOrBarrier(mapPoint: Point, boolean: Boolean) {
+        if (boolean) {
+            addStop(Stop(mapPoint))
+            // create a marker symbol and graphics, and add the graphics to the graphics overlay
+        } else {
+            // create a buffered polygon around the clicked point
+            val barrierBufferPolygon = GeometryEngine.bufferOrNull(mapPoint, 200.0)
+                ?: return showError("Error creating buffer polygon")
+            // create a polygon barrier for the routing task, and add it to the list of barriers
+            barriersList.add(PolygonBarrier(barrierBufferPolygon))
+
+            val barrierSymbol by lazy {
+                SimpleFillSymbol(SimpleFillSymbolStyle.DiagonalCross, Color.black, null)
+            }
+            graphicsOverlay.graphics.add(Graphic(barrierBufferPolygon, barrierSymbol))
+        }
+    }
 
 
     private fun findRoute() {
 
-        val routeTask = RouteTask(
-            "https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World"
-        )
+        val routeTask = RouteTask("https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World")
+        val trav = "{\"attributeParameterValues\": [{\"parameterName\": \"Restriction Usage\",\"attributeName\": \"Walking\",\"value\": \"PROHIBITED\"},{\"parameterName\": \"Restriction Usage\",\"attributeName\": \"Preferred for Pedestrians\",\"value\": \"PREFER_LOW\"},{\"parameterName\": \"Walking Speed (km/h)\",\"attributeName\": \"WalkTime\",\"value\": 5}],\"description\": \"Follows paths and roads that allow pedestrian traffic and finds solutions that optimize travel time. The walking speed is set to 5 kilometers per hour.\",\"impedanceAttributeName\": \"WalkTime\",\"simplificationToleranceUnits\": \"esriMeters\",\"uturnAtJunctions\": \"esriNFSBAllowBacktrack\",\"restrictionAttributeNames\": [\"Preferred for Pedestrians\",\"Walking\"],\"useHierarchy\": false,\"simplificationTolerance\": 2,\"timeAttributeName\": \"WalkTime\",\"distanceAttributeName\": \"Miles\",\"type\": \"WALK\",\"id\": \"caFAgoThrvUpkFBW\",\"name\": \"Walking Time\"}\n"
+        val aBarrier = JSONObject("""{
+            "spatialReference": {
+            "wkid": 4326
+        },
+        "features": [
+        {
+            "geometry": {
+            "x": -122.667,
+            "y": 45.55
+        },
+            "attributes": {
+            "Name": "Haley St rail road crossing",
+            "BarrierType": 2,
+            "Attr_TravelTime": 5
+        }
+        }
+        ]
+    }""")
 
         lifecycleScope.launch {
             val routeParameters: RouteParameters =
@@ -165,9 +186,19 @@ class MainActivity : AppCompatActivity() {
                 // Add the stops to the route parameters
                 setStops(routeStops)
                 setPolygonBarriers(barriersList)
+//                setPointBarriers(barrierList)
+//                setPointBarriers(barrierList)
 
                 // Return driving directions in Spanish
                 routeParameters.returnDirections = true
+//                routeParameters.travelMode.type
+////                    JSONObject(trav)
+
+//                routeParameters.setPointBarriers()=
+//
+//                routeParameters.travelMode = "walking"
+//                routeParameters?.travelMode =
+//                    routeTask?.getRouteTaskInfo()?.travelModes?.get(0)
             }
 
 //            routeParameters.travelMode =
@@ -195,19 +226,23 @@ class MainActivity : AppCompatActivity() {
                 route.directionManeuvers.forEach { directionManeuver: DirectionManeuver ->
                     directionsList.add(directionManeuver.directionText)
                 }
-                arrayAdapter.notifyDataSetChanged()
+//                arrayAdapter.notifyDataSetChanged()
 
             }
 
         }
     }
 
+
     private fun clear() {
         routeStops.clear()
-        graphicsOverlay.graphics.clear()
+
         directionsList.clear()
+        barriersList.clear()
+        graphicsOverlay.graphics.clear()
+        barriersOverlay.graphics.clear()
         directionsList.add("Tap to add two points to the map to find a route between them.")
-        arrayAdapter.notifyDataSetChanged()
+//        arrayAdapter.notifyDataSetChanged()
     }
 
     private fun setApiKeyForApp(){
@@ -242,14 +277,14 @@ class MainActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 onSingleTapConfirmed.collect { event: SingleTapConfirmedEvent ->
                     val point: com.arcgismaps.geometry.Point = event.mapPoint ?: return@collect showError("No map point retrieved from tap.")
-                    when (routeStops.size) {
+                    when (routeStops.size + barriersList.size) {
                         // on first tap, add a stop
                         0 -> {
-                            addStop(Stop(point))
+                            addStopOrBarrier(point,true)
                         }
                         // on second tap, add a stop and find route between them
                         1 -> {
-                            addStop(Stop(point))
+                            addStopOrBarrier(point,true)
 //                            findRoute()
 //                            Toast.makeText(
 //                                applicationContext,
@@ -257,19 +292,19 @@ class MainActivity : AppCompatActivity() {
 //                                Toast.LENGTH_SHORT
 //                            ).show()
                         }
-//                        2 -> {
-//                            addBarrier(Stop(point))
-//                            findRoute()
-//                            Toast.makeText(
-//                                applicationContext,
-//                                "Calculating route.",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }
+                        2 -> {
+                            addStopOrBarrier(point,false)
+                            findRoute()
+                            Toast.makeText(
+                                applicationContext,
+                                "Calculating route.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                         // on a further tap, clear and add a new first stop
                         else -> {
                             clear()
-                            addStop(Stop(point))
+                            addStopOrBarrier(point,true)
                         }
                     }
                 }
