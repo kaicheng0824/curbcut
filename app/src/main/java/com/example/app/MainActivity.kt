@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity() {
 
                 // Return driving directions in Spanish
                 routeParameters.returnDirections = true
-//                routeParameters.travelMode.type
+//                routeParameters.travelMode?.type ?:  = "walk"
 ////                    JSONObject(trav)
 
 //                routeParameters.setPointBarriers()=
