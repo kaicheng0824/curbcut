@@ -19,8 +19,9 @@ package com.example.app
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import android.widget.Button
+import android.widget.ImageButton
+
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -61,12 +62,16 @@ import com.arcgismaps.tasks.networkanalysis.Stop
 import com.arcgismaps.tasks.networkanalysis.TravelMode
 import com.example.app.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
+import android.webkit.WebView
+
 
 
 class MainActivity : AppCompatActivity() {
 
     private val activityMainBinding: ActivityMainBinding by lazy { DataBindingUtil.setContentView(this, R.layout.activity_main) }
     private val mapView: MapView by lazy { activityMainBinding.mapView }
+
+//    private val mapView: MapView by lazy { activityMainBinding.mapView }
 //    private val barrierList: MutableList<> by lazy { mutableListOf() }
 
 //    private val listView: ListView by lazy {
@@ -101,6 +106,15 @@ class MainActivity : AppCompatActivity() {
         // features, such as LocationProvider and application resources
         ArcGISEnvironment.applicationContext = applicationContext
 
+
+//        val intent = Intent(this, LoadingActivity::class.java)
+//        startActivity(intent)
+
+
+
+        // Optional: Finish the main activity if you don't want users to go back to it after they leave.
+
+
 //        listView.adapter = arrayAdapter
 
         setApiKeyForApp()
@@ -108,6 +122,32 @@ class MainActivity : AppCompatActivity() {
         setupSearchViewListener()
 //        setUpButtonListener()
         addGraphics()
+
+        val btnComm = findViewById<Button>(R.id.ButtonCommunity)
+        val btnProf = findViewById<Button>(R.id.ButtonProfile)
+        val btnSurv = findViewById<Button>(R.id.ButtonSurvey)
+
+        btnComm.setOnClickListener {
+            val intent = Intent(this, CommunityActivity::class.java)
+            startActivity(intent)
+        }
+
+        btnProf.setOnClickListener {
+            val intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+
+        val webView: WebView = findViewById(R.id.webView)
+        webView.settings.javaScriptEnabled = true
+
+        btnSurv.setOnClickListener {
+            val googleFormUrl = "https://arcg.is/1Ke8ni0"
+            webView.loadUrl(googleFormUrl)
+        }
+
+
+
 
 
 
@@ -364,11 +404,11 @@ class MainActivity : AppCompatActivity() {
             locatorTask.geocode(query, geocodeParameters)
 
                 .onSuccess { geocodeResults: List<GeocodeResult> ->
-                        if (geocodeResults.isNotEmpty()) {
-                            displayResult(geocodeResults[0])
-                        } else {
-                            showError("No address found for the given query.")
-                        }
+                    if (geocodeResults.isNotEmpty()) {
+                        displayResult(geocodeResults[0])
+                    } else {
+                        showError("No address found for the given query.")
+                    }
                 }.onFailure { error ->
                     showError("The locatorTask.geocode() call failed. " + error.message)
                 }
@@ -437,5 +477,3 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
-
-

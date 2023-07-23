@@ -1,10 +1,50 @@
 [
     {
-        "merged": "com.example.app-mergeDebugResources-34:/layout/activity_main.xml",
-        "source": "com.example.app-main-37:/layout/activity_main.xml"
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/popup_window.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/popup_window.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/popup_profile.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/popup_profile.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/activity_loading.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/activity_loading.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/post_item.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/post_item.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/community.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/community.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/profile_item.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/profile_item.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/activity_mode.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/activity_mode.xml"
+    },
+    {
+        "merged": "com.example.app-mergeDebugResources-34:/layout/popup_window.xml",
+        "source": "com.example.app-main-37:/layout/popup_window.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/profile.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/profile.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/simple_list_item_1.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/simple_list_item_1.xml"
     },
     {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/activity_main.xml",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-mergeDebugResources-34:/layout/activity_splash.xml",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/activity_splash.xml"
     }
 ]

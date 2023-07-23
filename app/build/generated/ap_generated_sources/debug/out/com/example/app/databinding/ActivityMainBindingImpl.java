@@ -17,8 +17,10 @@ public class ActivityMainBindingImpl extends ActivityMainBinding  {
         sViewsWithIds.put(R.id.searchView, 1);
         sViewsWithIds.put(R.id.guideline, 2);
         sViewsWithIds.put(R.id.mapView, 3);
-        sViewsWithIds.put(R.id.ButtonHome, 4);
+        sViewsWithIds.put(R.id.ButtonProfile, 4);
         sViewsWithIds.put(R.id.ButtonCommunity, 5);
+        sViewsWithIds.put(R.id.ButtonSurvey, 6);
+        sViewsWithIds.put(R.id.webView, 7);
     }
     // views
     @NonNull
@@ -29,15 +31,17 @@ public class ActivityMainBindingImpl extends ActivityMainBinding  {
     // Inverse Binding Event Handlers
 
     public ActivityMainBindingImpl(@Nullable androidx.databinding.DataBindingComponent bindingComponent, @NonNull View root) {
-        this(bindingComponent, root, mapBindings(bindingComponent, root, 6, sIncludes, sViewsWithIds));
+        this(bindingComponent, root, mapBindings(bindingComponent, root, 8, sIncludes, sViewsWithIds));
     }
     private ActivityMainBindingImpl(androidx.databinding.DataBindingComponent bindingComponent, View root, Object[] bindings) {
         super(bindingComponent, root, 0
             , (android.widget.Button) bindings[5]
             , (android.widget.Button) bindings[4]
+            , (android.widget.Button) bindings[6]
             , (androidx.constraintlayout.widget.Guideline) bindings[2]
             , (com.arcgismaps.mapping.view.MapView) bindings[3]
             , (android.widget.SearchView) bindings[1]
+            , (android.webkit.WebView) bindings[7]
             );
         this.mboundView0 = (androidx.constraintlayout.widget.ConstraintLayout) bindings[0];
         this.mboundView0.setTag(null);

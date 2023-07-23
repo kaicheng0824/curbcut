@@ -34,13 +34,37 @@
         android:testOnly="true"
         android:theme="@style/Theme.DisplayAMap" >
         <activity
-            android:name="com.example.app.MainActivity"
+            android:name="com.example.app.LoadingActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.example.app.MainActivity"
+            android:exported="true" >
+
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+
+
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+
+        </activity>
+        <activity
+            android:name="com.example.app.CommunityActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name="com.example.app.ModeActivity"
+            android:exported="true" >
+        </activity>
+        <activity
+            android:name="com.example.app.ProfileActivity"
+            android:exported="true" >
         </activity>
 
         <provider
