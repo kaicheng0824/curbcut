@@ -14,10 +14,12 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:queryHint="@string/search_hint"
+            android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline"
@@ -39,22 +41,40 @@
             app:layout_constraintTop_toBottomOf="@id/guideline" />
 
         <Button
-            android:id="@+id/ButtonHome"
+            android:id="@+id/ButtonProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
-            android:text="Home"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="4dp"
+            android:text="Meet People"
+            app:layout_constraintStart_toEndOf="@+id/ButtonCommunity"
             app:layout_constraintTop_toBottomOf="@+id/mapView" />
 
         <Button
             android:id="@+id/ButtonCommunity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:text="Community"
+            android:layout_marginStart="4dp"
+            android:text="Talk To Kirbie"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/mapView" />
+
+        <Button
+            android:id="@+id/ButtonSurvey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="10dp"
+            android:text="Survey"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/ButtonProfile"
+            app:layout_constraintTop_toBottomOf="@+id/mapView" />
+
+        <WebView
+            android:id="@+id/webView"
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

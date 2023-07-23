@@ -1,7 +1,19 @@
 [
     {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_activity_mode.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/activity_mode.xml"
+    },
+    {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-anydpi-v26_ic_launcher.xml.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_activity_loading.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/activity_loading.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_popup_window.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/popup_window.xml"
     },
     {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-mdpi_ic_launcher.webp.flat",
@@ -28,44 +40,28 @@
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/xml/data_extraction_rules.xml"
     },
     {
-        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-xxhdpi_ic_launcher.webp.flat",
-        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-xxhdpi/ic_launcher.webp"
-    },
-    {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/drawable-v24_ic_launcher_foreground.xml.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/drawable-v24/ic_launcher_foreground.xml"
-    },
-    {
-        "merged": "com.example.app-merged_res-35:/layout_activity_main.xml.flat",
-        "source": "com.example.app-main-37:/layout/activity_main.xml"
     },
     {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-hdpi_ic_launcher_round.webp.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-hdpi/ic_launcher_round.webp"
     },
     {
-        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
-        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-anydpi-v26/ic_launcher_round.xml"
-    },
-    {
-        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/xml_backup_rules.xml.flat",
-        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/xml/backup_rules.xml"
-    },
-    {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_community.xml.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/community.xml"
     },
     {
-        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-xxxhdpi_ic_launcher.webp.flat",
-        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-xxxhdpi/ic_launcher.webp"
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/drawable_screen_shot_2023_07_22_at_7_07_57_pm.png.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/drawable/screen_shot_2023_07_22_at_7_07_57_pm.png"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_profile.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/profile.xml"
     },
     {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-xxxhdpi_ic_launcher_round.webp.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-xxxhdpi/ic_launcher_round.webp"
-    },
-    {
-        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
-        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-xxhdpi/ic_launcher_round.webp"
     },
     {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-xhdpi_ic_launcher.webp.flat",
@@ -78,5 +74,57 @@
     {
         "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-mdpi_ic_launcher_round.webp.flat",
         "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-mdpi/ic_launcher_round.webp"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/drawable_route.png.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/drawable/route.png"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/drawable_talk_to_kirbie.png.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/drawable/talk_to_kirbie.png"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/drawable_meet_people.png.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/drawable/meet_people.png"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_popup_profile.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/popup_profile.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-xxhdpi_ic_launcher.webp.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-xxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "com.example.app-merged_res-35:/layout_popup_window.xml.flat",
+        "source": "com.example.app-main-37:/layout/popup_window.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_activity_splash.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/activity_splash.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-anydpi-v26_ic_launcher_round.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-anydpi-v26/ic_launcher_round.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/xml_backup_rules.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/xml/backup_rules.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_profile_item.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/profile_item.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-xxxhdpi_ic_launcher.webp.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-xxxhdpi/ic_launcher.webp"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/layout_post_item.xml.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/layout/post_item.xml"
+    },
+    {
+        "merged": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-merged_res-35:/mipmap-xxhdpi_ic_launcher_round.webp.flat",
+        "source": "/Users/kaiwencheng/.gradle/daemon/7.4.2/com.example.app-main-37:/mipmap-xxhdpi/ic_launcher_round.webp"
     }
 ]
