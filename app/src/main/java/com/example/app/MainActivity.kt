@@ -19,6 +19,7 @@ package com.example.app
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.SearchView
 import android.widget.Toast
@@ -28,13 +29,12 @@ import androidx.lifecycle.lifecycleScope
 import com.arcgismaps.ApiKey
 import com.arcgismaps.ArcGISEnvironment
 import com.arcgismaps.Color
-import com.arcgismaps.data.ServiceFeatureTable
+import com.arcgismaps.geometry.Geometry
 import com.arcgismaps.geometry.GeometryEngine
 import com.arcgismaps.geometry.Point
 import com.arcgismaps.mapping.ArcGISMap
-import com.arcgismaps.mapping.BasemapStyle
+import com.arcgismaps.mapping.PortalItem
 import com.arcgismaps.mapping.Viewpoint
-import com.arcgismaps.mapping.layers.FeatureLayer
 import com.arcgismaps.mapping.symbology.HorizontalAlignment
 import com.arcgismaps.mapping.symbology.SimpleFillSymbol
 import com.arcgismaps.mapping.symbology.SimpleFillSymbolStyle
@@ -48,6 +48,7 @@ import com.arcgismaps.mapping.view.Graphic
 import com.arcgismaps.mapping.view.GraphicsOverlay
 import com.arcgismaps.mapping.view.MapView
 import com.arcgismaps.mapping.view.SingleTapConfirmedEvent
+import com.arcgismaps.portal.Portal
 import com.arcgismaps.tasks.geocode.GeocodeParameters
 import com.arcgismaps.tasks.geocode.GeocodeResult
 import com.arcgismaps.tasks.geocode.LocatorTask
@@ -57,10 +58,9 @@ import com.arcgismaps.tasks.networkanalysis.RouteParameters
 import com.arcgismaps.tasks.networkanalysis.RouteResult
 import com.arcgismaps.tasks.networkanalysis.RouteTask
 import com.arcgismaps.tasks.networkanalysis.Stop
+import com.arcgismaps.tasks.networkanalysis.TravelMode
 import com.example.app.databinding.ActivityMainBinding
 import kotlinx.coroutines.launch
-import org.json.JSONObject
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -106,8 +106,9 @@ class MainActivity : AppCompatActivity() {
         setApiKeyForApp()
         setupMap()
         setupSearchViewListener()
-        setUpButtonListener()
+//        setUpButtonListener()
         addGraphics()
+
 
 
     }
@@ -139,7 +140,7 @@ class MainActivity : AppCompatActivity() {
             // create a marker symbol and graphics, and add the graphics to the graphics overlay
         } else {
             // create a buffered polygon around the clicked point
-            val barrierBufferPolygon = GeometryEngine.bufferOrNull(mapPoint, 200.0)
+            val barrierBufferPolygon = GeometryEngine.bufferOrNull(mapPoint, 50.0)
                 ?: return showError("Error creating buffer polygon")
             // create a polygon barrier for the routing task, and add it to the list of barriers
             barriersList.add(PolygonBarrier(barrierBufferPolygon))
@@ -155,25 +156,7 @@ class MainActivity : AppCompatActivity() {
     private fun findRoute() {
 
         val routeTask = RouteTask("https://route-api.arcgis.com/arcgis/rest/services/World/Route/NAServer/Route_World")
-        val trav = "{\"attributeParameterValues\": [{\"parameterName\": \"Restriction Usage\",\"attributeName\": \"Walking\",\"value\": \"PROHIBITED\"},{\"parameterName\": \"Restriction Usage\",\"attributeName\": \"Preferred for Pedestrians\",\"value\": \"PREFER_LOW\"},{\"parameterName\": \"Walking Speed (km/h)\",\"attributeName\": \"WalkTime\",\"value\": 5}],\"description\": \"Follows paths and roads that allow pedestrian traffic and finds solutions that optimize travel time. The walking speed is set to 5 kilometers per hour.\",\"impedanceAttributeName\": \"WalkTime\",\"simplificationToleranceUnits\": \"esriMeters\",\"uturnAtJunctions\": \"esriNFSBAllowBacktrack\",\"restrictionAttributeNames\": [\"Preferred for Pedestrians\",\"Walking\"],\"useHierarchy\": false,\"simplificationTolerance\": 2,\"timeAttributeName\": \"WalkTime\",\"distanceAttributeName\": \"Miles\",\"type\": \"WALK\",\"id\": \"caFAgoThrvUpkFBW\",\"name\": \"Walking Time\"}\n"
-        val aBarrier = JSONObject("""{
-            "spatialReference": {
-            "wkid": 4326
-        },
-        "features": [
-        {
-            "geometry": {
-            "x": -122.667,
-            "y": 45.55
-        },
-            "attributes": {
-            "Name": "Haley St rail road crossing",
-            "BarrierType": 2,
-            "Attr_TravelTime": 5
-        }
-        }
-        ]
-    }""")
+
 
         lifecycleScope.launch {
             val routeParameters: RouteParameters =
@@ -191,8 +174,17 @@ class MainActivity : AppCompatActivity() {
 
                 // Return driving directions in Spanish
                 routeParameters.returnDirections = true
-//                routeParameters.travelMode?.type ?:  = "walk"
-////                    JSONObject(trav)
+                val travel_mode = TravelMode()
+
+//                travel_mode.restrictionAttributeNames = mutableListOf("Preferred for Pedestrians","Walking")
+                travel_mode.type = "walk"
+                travel_mode.impedanceAttributeName = "TravelTime"
+                travel_mode.distanceAttributeName = "Miles"
+                routeParameters.travelMode = travel_mode
+
+//                routeParameters.travelMode!!.type = "erfefrergf"
+//                routeParameters.travelMode = TravelMode(JSONObject(trav))
+//                routeParameters.travelMode!!.type = "Walking"
 
 //                routeParameters.setPointBarriers()=
 //
@@ -257,40 +249,49 @@ class MainActivity : AppCompatActivity() {
         lifecycle.addObserver(mapView)
 
         // create a map with the BasemapStyle topographic
-        val topographicMap = ArcGISMap(BasemapStyle.ArcGISTopographic)
+        val portal = Portal("https://www.arcgis.com", Portal.Connection.Anonymous)
 
-        val portlandBikeRack = "https://services3.arcgis.com/GVgbJbqm8hXASVYi/ArcGIS/rest/services/Bike%20Parking/FeatureServer/0"
-        val portlandBikeRoute = "https://services3.arcgis.com/GVgbJbqm8hXASVYi/ArcGIS/rest/services/Portland%20Bike%20Routes/FeatureServer/0"
+        val itemId = "96279e3f69b24cfd9e6a9ba161a0996c"
+        val portalItem = PortalItem(portal, itemId)
+        val webmap = ArcGISMap(portalItem)
+//        val topographicMap = ArcGISMap(BasemapStyle.ArcGISTopographic)
+//
+//
+//        val portlandBikeRack = "https://services3.arcgis.com/GVgbJbqm8hXASVYi/ArcGIS/rest/services/Bike%20Parking/FeatureServer/0"
+//        val portlandBikeRoute = "https://services3.arcgis.com/GVgbJbqm8hXASVYi/ArcGIS/rest/services/Portland%20Bike%20Routes/FeatureServer/0"
+//
+//        val portlandBikeRackFeatureTable = ServiceFeatureTable(portlandBikeRack)
+//        val portlandBikeRouteFeatureTable = ServiceFeatureTable(portlandBikeRoute)
 
-        val portlandBikeRackFeatureTable = ServiceFeatureTable(portlandBikeRack)
-        val portlandBikeRouteFeatureTable = ServiceFeatureTable(portlandBikeRoute)
 
-
+        val stopList = mutableListOf<Geometry>()
         mapView.apply {
             // set the map to be displayed in the layout's MapView
-            map = topographicMap
+            map = webmap
 
             // set the viewpoint, Viewpoint(latitude, longitude, scale)
-            setViewpoint(Viewpoint(45.51, -122.667, 72000.0))
+            setViewpoint(Viewpoint(49.181324, -122.849912
+
+                , 20000.0))
+
 
             graphicsOverlays.add(graphicsOverlay)
             lifecycleScope.launch {
                 onSingleTapConfirmed.collect { event: SingleTapConfirmedEvent ->
                     val point: com.arcgismaps.geometry.Point = event.mapPoint ?: return@collect showError("No map point retrieved from tap.")
                     when (routeStops.size + barriersList.size) {
+                        //barriersList.size
                         // on first tap, add a stop
                         0 -> {
                             addStopOrBarrier(point,true)
+                            stopList.add(point)
+
                         }
                         // on second tap, add a stop and find route between them
                         1 -> {
                             addStopOrBarrier(point,true)
-//                            findRoute()
-//                            Toast.makeText(
-//                                applicationContext,
-//                                "Calculating route.",
-//                                Toast.LENGTH_SHORT
-//                            ).show()
+                            stopList.add(point)
+
                         }
                         2 -> {
                             addStopOrBarrier(point,false)
@@ -311,8 +312,8 @@ class MainActivity : AppCompatActivity() {
             }
 
         }
-        topographicMap.operationalLayers.add(FeatureLayer.createWithFeatureTable(portlandBikeRackFeatureTable))
-        topographicMap.operationalLayers.add(FeatureLayer.createWithFeatureTable(portlandBikeRouteFeatureTable))
+//        topographicMap.operationalLayers.add(FeatureLayer.createWithFeatureTable(portlandBikeRackFeatureTable))
+//        topographicMap.operationalLayers.add(FeatureLayer.createWithFeatureTable(portlandBikeRouteFeatureTable))
     }
 
 
@@ -326,18 +327,25 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun setUpButtonListener() {
-//        activityMainBinding.ButtonCommunity.setOnClickListener(View.OnClickListener {
-//            val menuIntent = Intent(this, Community::class.java)
-//            startActivity(menuIntent)
-//        })
-        val button: Button = findViewById(R.id.ButtonCommunity)
-        // Register the onClick listener with the implementation above
-        button.setOnClickListener { view ->
-            val menuIntent = Intent(this, Community::class.java)
-            startActivity(menuIntent)
-        }
-    }
+
+//    fun buTestUpdateText2 (view: View) {
+//        val changePage = Intent(this, Community::class.java)
+//        // Error: "Please specify constructor invocation;
+//        // classifier 'Page2' does not have a companion object"
+//
+//        startActivity(changePage)
+//    }
+//
+//    private fun setUpButtonListener() {
+////        activityMainBinding.ButtonCommunity.setOnClickListener(View.OnClickListener {
+////            val menuIntent = Intent(this, Community::class.java)
+////            startActivity(menuIntent)
+////        })
+//        val button: Button = findViewById(R.id.ButtonCommunity)
+//        // Register the onClick listener with the implementation above
+//        button.setOnClickListener {
+//            buTestUpdateText2(view:View)
+//    }
 
 
 
